@@ -21,4 +21,10 @@ describe('Gilded Rose', function () {
     expect(items[0].quality).to.greaterThan(-1);
   })
 
+  it('Quality should degrades twice as fast if sell date has passed', function () {
+    const gildedRose = new GildedRose([new Item('foo', -2, 8)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equals(6);
+  })
+
 });
