@@ -15,4 +15,10 @@ describe('Gilded Rose', function () {
     expect(items[0].quality).to.greaterThan(-1);
   })
 
+  it('quality should not be negative', function () {
+    const gildedRose = new GildedRose([new Item('foo', -1, -1)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.greaterThan(-1);
+  })
+
 });
