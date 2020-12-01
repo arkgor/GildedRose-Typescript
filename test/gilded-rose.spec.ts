@@ -8,4 +8,11 @@ describe('Gilded Rose', function () {
     const items = gildedRose.updateQuality();
     expect(items[0].name).to.equal('foo');
   });
+
+  it('should not create Item with negative quality', function () {
+    const gildedRose = new GildedRose([new Item('foo', -1, -1)]);
+    const items = gildedRose.items;
+    expect(items[0].quality).to.greaterThan(-1);
+  })
+
 });
