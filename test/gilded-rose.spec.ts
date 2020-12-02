@@ -62,18 +62,6 @@ describe('Gilded Rose', function () {
     expect(snapshot).to.eql(values);
   })
 
-  it('should not create Item with negative quality', function () {
-    const gildedRose = new GildedRose([new Item('foo', -1, -1)]);
-    const items = gildedRose.items;
-    expect(items[0].quality).to.greaterThan(-1);
-  })
-
-  it('quality should not be negative', function () {
-    const gildedRose = new GildedRose([new Item('foo', -1, -1)]);
-    const items = gildedRose.updateQuality();
-    expect(items[0].quality).to.greaterThan(-1);
-  })
-
   it('Quality should degrades twice as fast if sell date has passed', function () {
     const gildedRose = new GildedRose([new Item('foo', -2, 8)]);
     const items = gildedRose.updateQuality();
