@@ -61,28 +61,57 @@ describe('Gilded Rose', function () {
 
     expect(snapshot).to.eql(values);
   })
-
-  it('Quality should degrades twice as fast if sell date has passed', function () {
-    const gildedRose = new GildedRose([new Item('foo', -2, 8)]);
-    const items = gildedRose.updateQuality();
-    expect(items[0].quality).to.equals(6);
-  })
 });
 
-describe('\'Backstage passes to a TAFKAL80ETC concert\'', function () {
-  it('checks if \'Backstage passes to a TAFKAL80ETC concert\' quality is decreased by 1', function () {
-    const gildedRose = new GildedRose([
-      new Item('Backstage passes to a TAFKAL80ETC concert', 3, 22)]);
-    gildedRose.updateQuality();
-    expect(gildedRose.items[0].quality).to.equal(25);
+describe('\'Items quality checks\'', function () {
+  it('\'Backstage passes to a TAFKAL80ETC concert\'', function () {
+    testBackstagePassQuality(0, -1, 20)
+    testBackstagePassQuality(0, 0, 20)
+    testBackstagePassQuality(23, 3, 20)
+    testBackstagePassQuality(22, 6, 20)
+    testBackstagePassQuality(22, 8, 20)
+    testBackstagePassQuality(21, 10, 20)
+    testBackstagePassQuality(21, 12, 20)
+    testBackstagePassQuality(50, 3, 50)
+
+    function testBackstagePassQuality(expected: number, sellIn: number, quality: number) {
+      const gildedRose = new GildedRose([
+        new Item('Backstage passes to a TAFKAL80ETC concert', sellIn, quality)]);
+      gildedRose.updateQuality();
+      expect(gildedRose.items[0].quality).to.equal(expected)
+    }
   })
 
-  it('checks if \'Backstage passes to a TAFKAL80ETC concert\' quality doesn\'t go over 50', function () {
-    const gildedRose = new GildedRose([
-      new Item('Backstage passes to a TAFKAL80ETC concert', 3, 50)]);
-    gildedRose.updateQuality();
-    expect(gildedRose.items[0].quality).to.equal(50)
+
+  it('checks \'Aged Brie\' quality pass', function () {
+    testAgedBrieQuality(22, -1, 20)
+    testAgedBrieQuality(22, 0, 20)
+    testAgedBrieQuality(21, 3, 20)
+    testAgedBrieQuality(21, 6, 20)
+    testAgedBrieQuality(21, 8, 20)
+    testAgedBrieQuality(21, 10, 20)
+    testAgedBrieQuality(21, 11, 20)
+
+    function testAgedBrieQuality(expected: number, sellIn: number, quality: number) {
+      const gildedRose = new GildedRose([
+        new Item('Aged Brie', sellIn, quality)]);
+      gildedRose.updateQuality();
+      expect(gildedRose.items[0].quality).to.equal(expected)
+    }
   })
 
+  it('Generic Items', function () {
+    testGenericItemQuality(18, -2, 20)
+    testGenericItemQuality(18, 0, 20)
+    testGenericItemQuality(19, 4, 20)
+    testGenericItemQuality(19, 8, 20)
+    testGenericItemQuality(19, 12, 20)
 
+    function testGenericItemQuality(expected: number, sellIn: number, quality: number) {
+      const gildedRose = new GildedRose([
+        new Item('Foo', sellIn, quality)]);
+      gildedRose.updateQuality();
+      expect(gildedRose.items[0].quality).to.equal(expected)
+    }
+  })
 })
