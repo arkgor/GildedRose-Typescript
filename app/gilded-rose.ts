@@ -41,7 +41,6 @@ export class GildedRose {
                               this.items[i].quality = this.items[i].quality + 1
                           }
                       }
-                      // 'Aged Brie starts increasing with sellIn 5>
                       if (this.items[i].sellIn < 6) {
                           // duplication of quality < 50
                           if (this.items[i].quality < 50) {
