@@ -80,3 +80,21 @@ describe('Gilded Rose', function () {
     expect(items[0].quality).to.equals(6);
   })
 });
+
+describe('\'Backstage passes to a TAFKAL80ETC concert\'', function () {
+  it('checks if \'Backstage passes to a TAFKAL80ETC concert\' quality is decreased by 1', function () {
+    const gildedRose = new GildedRose([
+      new Item('Backstage passes to a TAFKAL80ETC concert', 3, 22)]);
+    gildedRose.updateQuality();
+    expect(gildedRose.items[0].quality).to.equal(25);
+  })
+
+  it('checks if \'Backstage passes to a TAFKAL80ETC concert\' quality doesn\'t go over 50', function () {
+    const gildedRose = new GildedRose([
+      new Item('Backstage passes to a TAFKAL80ETC concert', 3, 50)]);
+    gildedRose.updateQuality();
+    expect(gildedRose.items[0].quality).to.equal(50)
+  })
+
+
+})
