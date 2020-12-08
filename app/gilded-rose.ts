@@ -23,9 +23,7 @@ export class GildedRose {
             // don't do anything
           } else if (this.isGeneric(item)) {
               if (item.quality > 0) {
-                  if (!this.isSulfuras(item)) {
-                      this.decreaseItemQuality(item);
-                  }
+                  this.decreaseItemQuality(item);
               }
           }
           else {
