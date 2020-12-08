@@ -48,16 +48,20 @@ export class GildedRose {
         }
       }
 
-      if (item.sellIn < 0) {
-        if (this.isAgedBrie(item)) {
+      if (this.isAgedBrie(item)) {
+        if (item.sellIn < 0) {
           if (this.isQualityLessThanMax(item)) {
             this.increaseItemQuality(item);
           }
-        } else if (this.isBackstagePass(item)) {
+        }
+      } else if (this.isBackstagePass(item)) {
+        if (item.sellIn < 0) {
           item.quality = item.quality - item.quality;
-        } else if (this.isSulfuras(item)) {
-          // nothing for now
-        } else if (this.isGeneric(item)) {
+        }
+      } else if (this.isSulfuras(item)) {
+        // nothing for now
+      } else if (this.isGeneric(item)) {
+        if (item.sellIn < 0) {
           if (item.quality > 0) {
             this.decreaseItemQuality(item);
           }
