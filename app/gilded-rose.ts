@@ -19,78 +19,78 @@ export class GildedRose {
 
   updateQuality() {
       for (let i = 0; i < this.items.length; i++) {
-        // if not named "Aged Brie" and not named "Backstage passes to a TAFKAL80ETC concert"
-        // if quality greater than and name is not "Sulfuras, Hand of Ragnaros"
-        // quality lowers by 1
-          if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
+          if (!this.isAgedBrie(this.items[i]) && !this.isBackstagePass(this.items[i])) {
               if (this.items[i].quality > 0) {
-                  if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-                      this.items[i].quality = this.items[i].quality - 1
+                  if (!this.isSulfuras(this.items[i])) {
+                      this.decreaseItemQuality(this.items[i]);
                   }
               }
           } else {
-            // Aged Brie and 'Backstage passes to a TAFKAL80ETC concert' gets more quality wit sellIn value decrease
-            // but no more than quality 50
-              if (this.items[i].quality < 50) {
-                  this.items[i].quality = this.items[i].quality + 1
-                  if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-                      // 'Backstage passes to a TAFKAL80ETC concert' starts increasing with day 11
+              if (this.isQualityLessThanMax(this.items[i])) {
+                   this.increaseItemQuality(this.items[i]);
+                  if (this.isBackstagePass(this.items[i])) {
                       if (this.items[i].sellIn < 10) {
-                          // duplication of quality < 50
-                          if (this.items[i].quality < 50) {
-                              this.items[i].quality = this.items[i].quality + 1
+                          if (this.isQualityLessThanMax(this.items[i])) {
+                               this.increaseItemQuality(this.items[i]);
                           }
                       }
                       if (this.items[i].sellIn < 6) {
-                          // duplication of quality < 50
-                          if (this.items[i].quality < 50) {
-                              this.items[i].quality = this.items[i].quality + 1
+                          if (this.isQualityLessThanMax(this.items[i])) {
+                               this.increaseItemQuality(this.items[i]);
                           }
                       }
                   }
               }
           }
 
-          // decrease sellIn value for every item other than "Sulfuras, Hand of Ragnaros"
-          // ?? shouldn't sellIn be decreased at the end ??
-          if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
+          if (!this.isSulfuras(this.items[i])) {
               this.items[i].sellIn = this.items[i].sellIn - 1;
           }
 
-          // special treatment for passed sellIn
-          // ?? first If and this If gets fired, what makes two calculations on the same value
           if (this.items[i].sellIn < 0) {
-            // Aged Brie increases the quality when due date passed, but no more than 50
-              if (this.items[i].name != 'Aged Brie') {
-                  // Backstage passes to a TAFKAL80ETC concert - immediately goes to 0 if due date passed
-                  if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
+              if (!this.isAgedBrie(this.items[i])) {
+                  if (!this.isBackstagePass(this.items[i])) {
                       if (this.items[i].quality > 0) {
 
-                    // Sulfuras, Hand of Ragnaros - does not change quality
-                          if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-                              this.items[i].quality = this.items[i].quality - 1
+                          if (!this.isSulfuras(this.items[i])) {
+                              this.decreaseItemQuality(this.items[i]);
                           }
                       }
                   } else {
                       this.items[i].quality = this.items[i].quality - this.items[i].quality
                   }
               } else {
-                  if (this.items[i].quality < 50) {
-                      this.items[i].quality = this.items[i].quality + 1
+                  if (this.isQualityLessThanMax(this.items[i])) {
+                      this.increaseItemQuality(this.items[i]);
                   }
               }
           }
       }
 
-      // ?? ideas for improvements
-      // 1. extract each special Item logic
-        // for 'Aged Bire' do this ...
-        // for 'Sulfuras, Hand of Ragnaros' do this ...
-        // for 'Backstage passes to a TAFKAL80ETC concert' do this ...
-        // for rest do this ....
-      // 2. maybe use switch for that, depending on the name
-        
-
       return this.items;
+  }
+
+  private isSulfuras(item: Item) {
+    return item.name == 'Sulfuras, Hand of Ragnaros';
+  }
+
+  private isBackstagePass(item: Item) {
+    return  item.name == 'Backstage passes to a TAFKAL80ETC concert';
+  }
+
+  private isAgedBrie(item: Item) {
+    return item.name == 'Aged Brie';
+  }
+
+  private isQualityLessThanMax(item: Item) {
+    return item.quality < 50;
+  }
+
+  private increaseItemQuality(item: Item) {
+    item.quality = item.quality + 1;
+  }
+
+  private decreaseItemQuality(item: Item) {
+    item.quality = item.quality - 1;
   }
 }
