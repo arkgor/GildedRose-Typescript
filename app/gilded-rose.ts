@@ -19,13 +19,16 @@ export class GildedRose {
 
   updateQuality() {
       for (let item of this.items) {
-          if (this.isSulfuras(item) || this.isGeneric(item)) {
+          if (this.isSulfuras(item)) {
+            // don't do anything
+          } else if (this.isGeneric(item)) {
               if (item.quality > 0) {
                   if (!this.isSulfuras(item)) {
                       this.decreaseItemQuality(item);
                   }
               }
-          } else {
+          }
+          else {
               if (this.isQualityLessThanMax(item)) {
                    this.increaseItemQuality(item);
                   if (this.isBackstagePass(item)) {
