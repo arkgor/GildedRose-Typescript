@@ -19,7 +19,7 @@ export class GildedRose {
 
   updateQuality() {
       for (let item of this.items) {
-          if (!this.isAgedBrie(item) && !this.isBackstagePass(item)) {
+          if (this.isSulfuras(item) || this.isGeneric(item)) {
               if (item.quality > 0) {
                   if (!this.isSulfuras(item)) {
                       this.decreaseItemQuality(item);
@@ -68,6 +68,10 @@ export class GildedRose {
       }
 
       return this.items;
+  }
+
+  private isGeneric(item: Item) {
+    return !(this.isSulfuras(item) || this.isBackstagePass(item) || this.isAgedBrie(item))
   }
 
   private isSulfuras(item: Item) {
