@@ -18,50 +18,50 @@ export class GildedRose {
   }
 
   updateQuality() {
-      for (let i = 0; i < this.items.length; i++) {
-          if (!this.isAgedBrie(this.items[i]) && !this.isBackstagePass(this.items[i])) {
-              if (this.items[i].quality > 0) {
-                  if (!this.isSulfuras(this.items[i])) {
-                      this.decreaseItemQuality(this.items[i]);
+      for (let item of this.items) {
+          if (!this.isAgedBrie(item) && !this.isBackstagePass(item)) {
+              if (item.quality > 0) {
+                  if (!this.isSulfuras(item)) {
+                      this.decreaseItemQuality(item);
                   }
               }
           } else {
-              if (this.isQualityLessThanMax(this.items[i])) {
-                   this.increaseItemQuality(this.items[i]);
-                  if (this.isBackstagePass(this.items[i])) {
-                      if (this.items[i].sellIn < 10) {
-                          if (this.isQualityLessThanMax(this.items[i])) {
-                               this.increaseItemQuality(this.items[i]);
+              if (this.isQualityLessThanMax(item)) {
+                   this.increaseItemQuality(item);
+                  if (this.isBackstagePass(item)) {
+                      if (item.sellIn < 10) {
+                          if (this.isQualityLessThanMax(item)) {
+                               this.increaseItemQuality(item);
                           }
                       }
-                      if (this.items[i].sellIn < 6) {
-                          if (this.isQualityLessThanMax(this.items[i])) {
-                               this.increaseItemQuality(this.items[i]);
+                      if (item.sellIn < 6) {
+                          if (this.isQualityLessThanMax(item)) {
+                               this.increaseItemQuality(item);
                           }
                       }
                   }
               }
           }
 
-          if (!this.isSulfuras(this.items[i])) {
-              this.items[i].sellIn = this.items[i].sellIn - 1;
+          if (!this.isSulfuras(item)) {
+              item.sellIn = item.sellIn - 1;
           }
 
-          if (this.items[i].sellIn < 0) {
-              if (!this.isAgedBrie(this.items[i])) {
-                  if (!this.isBackstagePass(this.items[i])) {
-                      if (this.items[i].quality > 0) {
+          if (item.sellIn < 0) {
+              if (!this.isAgedBrie(item)) {
+                  if (!this.isBackstagePass(item)) {
+                      if (item.quality > 0) {
 
-                          if (!this.isSulfuras(this.items[i])) {
-                              this.decreaseItemQuality(this.items[i]);
+                          if (!this.isSulfuras(item)) {
+                              this.decreaseItemQuality(item);
                           }
                       }
                   } else {
-                      this.items[i].quality = this.items[i].quality - this.items[i].quality
+                      item.quality = item.quality - item.quality
                   }
               } else {
-                  if (this.isQualityLessThanMax(this.items[i])) {
-                      this.increaseItemQuality(this.items[i]);
+                  if (this.isQualityLessThanMax(item)) {
+                      this.increaseItemQuality(item);
                   }
               }
           }
