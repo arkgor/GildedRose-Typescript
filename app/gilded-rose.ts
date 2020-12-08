@@ -22,54 +22,60 @@ export class GildedRose {
       if (this.isSulfuras(item)) {
         // don't do anything
       } else if (this.isGeneric(item)) {
-        if (item.quality > 0) {
-          this.decreaseItemQuality(item);
-        }
-        this.decreaseSellIn(item);
+        this.updateGeneric(item);
       } else if (this.isAgedBrie(item)) {
-        if (this.isQualityLessThanMax(item)) {
-          this.increaseItemQuality(item);
-        }
-        this.decreaseSellIn(item);
+        this.updateAgedBrie(item);
       } else if (this.isBackstagePass(item)) {
-        if (this.isQualityLessThanMax(item)) {
-          this.increaseItemQuality(item);
-          if (item.sellIn < 10) {
-            if (this.isQualityLessThanMax(item)) {
-              this.increaseItemQuality(item);
-            }
-          }
-          if (item.sellIn < 6) {
-            if (this.isQualityLessThanMax(item)) {
-              this.increaseItemQuality(item);
-            }
-          }
-          this.decreaseSellIn(item);
-        }
-      }
-
-      if (this.isAgedBrie(item)) {
-        if (item.sellIn < 0) {
-          if (this.isQualityLessThanMax(item)) {
-            this.increaseItemQuality(item);
-          }
-        }
-      } else if (this.isBackstagePass(item)) {
-        if (item.sellIn < 0) {
-          item.quality = item.quality - item.quality;
-        }
-      } else if (this.isSulfuras(item)) {
-        // nothing for now
-      } else if (this.isGeneric(item)) {
-        if (item.sellIn < 0) {
-          if (item.quality > 0) {
-            this.decreaseItemQuality(item);
-          }
-        }
+        this.updateBackstagePass(item);
       }
     }
 
     return this.items;
+  }
+
+  private updateBackstagePass(item: Item) {
+    if (this.isQualityLessThanMax(item)) {
+      this.increaseItemQuality(item);
+      if (item.sellIn < 10) {
+        if (this.isQualityLessThanMax(item)) {
+          this.increaseItemQuality(item);
+        }
+      }
+      if (item.sellIn < 6) {
+        if (this.isQualityLessThanMax(item)) {
+          this.increaseItemQuality(item);
+        }
+      }
+      this.decreaseSellIn(item);
+    }
+
+    if (item.sellIn < 0) {
+      item.quality = item.quality - item.quality;
+    }
+  }
+
+  private updateAgedBrie(item: Item) {
+    if (this.isQualityLessThanMax(item)) {
+      this.increaseItemQuality(item);
+    }
+    this.decreaseSellIn(item);
+    if (item.sellIn < 0) {
+      if (this.isQualityLessThanMax(item)) {
+        this.increaseItemQuality(item);
+      }
+    }
+  }
+
+  private updateGeneric(item: Item) {
+    if (item.quality > 0) {
+      this.decreaseItemQuality(item);
+    }
+    this.decreaseSellIn(item);
+    if (item.sellIn < 0) {
+      if (item.quality > 0) {
+        this.decreaseItemQuality(item);
+      }
+    }
   }
 
   private decreaseSellIn(item: Item) {
