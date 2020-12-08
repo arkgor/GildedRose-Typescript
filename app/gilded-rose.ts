@@ -53,14 +53,12 @@ export class GildedRose {
           if (this.isQualityLessThanMax(item)) {
             this.increaseItemQuality(item);
           }
+        } else if (this.isBackstagePass(item)) {
+          item.quality = item.quality - item.quality;
         } else {
-          if (this.isBackstagePass(item)) {
-            item.quality = item.quality - item.quality;
-          } else {
-            if (item.quality > 0) {
-              if (!this.isSulfuras(item)) {
-                this.decreaseItemQuality(item);
-              }
+          if (item.quality > 0) {
+            if (!this.isSulfuras(item)) {
+              this.decreaseItemQuality(item);
             }
           }
         }
