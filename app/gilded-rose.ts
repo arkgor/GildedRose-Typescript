@@ -19,19 +19,19 @@ export class GildedRose {
 
   updateQuality() {
     for (let item of this.items) {
-      if (this.isSulfuras(item)) {
+      if (GildedRose.isSulfuras(item)) {
         // don't do anything
-      } else if (this.isGeneric(item)) {
+      } else if (GildedRose.isGeneric(item)) {
         const generic = new GenericItem(item.quality, item.sellIn)
         generic.update()
         item.quality = generic.quality
         item.sellIn = generic.sellIn
-      } else if (this.isAgedBrie(item)) {
+      } else if (GildedRose.isAgedBrie(item)) {
         const aged = new AgedBrie(item.quality, item.sellIn)
         aged.update()
         item.quality = aged.quality
         item.sellIn = aged.sellIn
-      } else if (this.isBackstagePass(item)) {
+      } else if (GildedRose.isBackstagePass(item)) {
         const backstagePass = new BackstagePass(item.quality, item.sellIn)
         backstagePass.update()
         item.quality = backstagePass.quality
@@ -43,23 +43,23 @@ export class GildedRose {
   }
 
 
-  private isGeneric(item: Item) {
+  private static isGeneric(item: Item) {
     return !(
-      this.isSulfuras(item) ||
-      this.isBackstagePass(item) ||
-      this.isAgedBrie(item)
+      GildedRose.isSulfuras(item) ||
+      GildedRose.isBackstagePass(item) ||
+      GildedRose.isAgedBrie(item)
     );
   }
 
-  private isSulfuras(item: Item) {
+  private static isSulfuras(item: Item) {
     return item.name == "Sulfuras, Hand of Ragnaros";
   }
 
-  private isBackstagePass(item: Item) {
+  private static isBackstagePass(item: Item) {
     return item.name == "Backstage passes to a TAFKAL80ETC concert";
   }
 
-  private isAgedBrie(item: Item) {
+  private static isAgedBrie(item: Item) {
     return item.name == "Aged Brie";
   }
 
