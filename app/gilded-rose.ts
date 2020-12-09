@@ -22,44 +22,20 @@ export class GildedRose {
       if (this.isSulfuras(item)) {
         // don't do anything
       } else if (this.isGeneric(item)) {
-        if (item.quality > 0) {
-          item.quality = item.quality - 1;
-        }
-        item.sellIn = item.sellIn - 1;
-        if (item.sellIn < 0) {
-          if (item.quality > 0) {
-            item.quality = item.quality - 1;
-          }
-        }
+        const generic = new GenericItem(item.quality, item.sellIn)
+        generic.update()
+        item.quality = generic.quality
+        item.sellIn = generic.sellIn
       } else if (this.isAgedBrie(item)) {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1;
-        }
-        item.sellIn = item.sellIn - 1;
-        if (item.sellIn < 0) {
-          if (item.quality < 50) {
-            item.quality = item.quality + 1;
-          }
-        }
+        const aged = new AgedBrie(item.quality, item.sellIn)
+        aged.update()
+        item.quality = aged.quality
+        item.sellIn = aged.sellIn
       } else if (this.isBackstagePass(item)) {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1;
-          if (item.sellIn < 10) {
-            if (item.quality < 50) {
-              item.quality = item.quality + 1;
-            }
-          }
-          if (item.sellIn < 6) {
-            if (item.quality < 50) {
-              item.quality = item.quality + 1;
-            }
-          }
-          item.sellIn = item.sellIn - 1;
-        }
-
-        if (item.sellIn < 0) {
-          item.quality = item.quality - item.quality;
-        }
+        const backstagePass = new BackstagePass(item.quality, item.sellIn)
+        backstagePass.update()
+        item.quality = backstagePass.quality
+        item.sellIn = backstagePass.sellIn
       }
     }
 
@@ -87,4 +63,82 @@ export class GildedRose {
     return item.name == "Aged Brie";
   }
 
+}
+
+
+class GenericItem {
+  sellIn: number;
+  quality: number;
+
+  constructor(quality: number, sellIn: number) {
+    this.quality = quality;
+    this.sellIn = sellIn
+  }
+
+  update() {
+    if (this.quality > 0) {
+      this.quality = this.quality - 1;
+    }
+
+    this.sellIn = this.sellIn - 1;
+
+    if (this.sellIn < 0) {
+      if (this.quality > 0) {
+        this.quality = this.quality - 1;
+      }
+    }
+  }
+}
+
+class AgedBrie {
+  sellIn: number;
+  quality: number;
+
+  constructor(quality: number, sellIn: number) {
+    this.quality = quality;
+    this.sellIn = sellIn
+  }
+
+  update() {
+    if (this.quality < 50) {
+      this.quality = this.quality + 1;
+    }
+    this.sellIn = this.sellIn - 1;
+    if (this.sellIn < 0) {
+      if (this.quality < 50) {
+        this.quality = this.quality + 1;
+      }
+    }
+  }
+}
+
+class BackstagePass {
+  sellIn: number;
+  quality: number;
+
+  constructor(quality: number, sellIn: number) {
+    this.quality = quality;
+    this.sellIn = sellIn
+  }
+
+  update() {
+    if (this.quality < 50) {
+      this.quality = this.quality + 1;
+      if (this.sellIn < 10) {
+        if (this.quality < 50) {
+          this.quality = this.quality + 1;
+        }
+      }
+      if (this.sellIn < 6) {
+        if (this.quality < 50) {
+          this.quality = this.quality + 1;
+        }
+      }
+      this.sellIn = this.sellIn - 1;
+    }
+
+    if (this.sellIn < 0) {
+      this.quality = this.quality - this.quality;
+    }
+  }
 }
