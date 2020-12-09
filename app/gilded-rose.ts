@@ -22,65 +22,50 @@ export class GildedRose {
       if (this.isSulfuras(item)) {
         // don't do anything
       } else if (this.isGeneric(item)) {
-        this.updateGeneric(item);
+        if (item.quality > 0) {
+          item.quality = item.quality - 1;
+        }
+        item.sellIn = item.sellIn - 1;
+        if (item.sellIn < 0) {
+          if (item.quality > 0) {
+            item.quality = item.quality - 1;
+          }
+        }
       } else if (this.isAgedBrie(item)) {
-        this.updateAgedBrie(item);
+        if (item.quality < 50) {
+          item.quality = item.quality + 1;
+        }
+        item.sellIn = item.sellIn - 1;
+        if (item.sellIn < 0) {
+          if (item.quality < 50) {
+            item.quality = item.quality + 1;
+          }
+        }
       } else if (this.isBackstagePass(item)) {
-        this.updateBackstagePass(item);
+        if (item.quality < 50) {
+          item.quality = item.quality + 1;
+          if (item.sellIn < 10) {
+            if (item.quality < 50) {
+              item.quality = item.quality + 1;
+            }
+          }
+          if (item.sellIn < 6) {
+            if (item.quality < 50) {
+              item.quality = item.quality + 1;
+            }
+          }
+          item.sellIn = item.sellIn - 1;
+        }
+
+        if (item.sellIn < 0) {
+          item.quality = item.quality - item.quality;
+        }
       }
     }
 
     return this.items;
   }
 
-  private updateBackstagePass(item: Item) {
-    if (this.isQualityLessThanMax(item)) {
-      this.increaseItemQuality(item);
-      if (item.sellIn < 10) {
-        if (this.isQualityLessThanMax(item)) {
-          this.increaseItemQuality(item);
-        }
-      }
-      if (item.sellIn < 6) {
-        if (this.isQualityLessThanMax(item)) {
-          this.increaseItemQuality(item);
-        }
-      }
-      this.decreaseSellIn(item);
-    }
-
-    if (item.sellIn < 0) {
-      item.quality = item.quality - item.quality;
-    }
-  }
-
-  private updateAgedBrie(item: Item) {
-    if (this.isQualityLessThanMax(item)) {
-      this.increaseItemQuality(item);
-    }
-    this.decreaseSellIn(item);
-    if (item.sellIn < 0) {
-      if (this.isQualityLessThanMax(item)) {
-        this.increaseItemQuality(item);
-      }
-    }
-  }
-
-  private updateGeneric(item: Item) {
-    if (item.quality > 0) {
-      this.decreaseItemQuality(item);
-    }
-    this.decreaseSellIn(item);
-    if (item.sellIn < 0) {
-      if (item.quality > 0) {
-        this.decreaseItemQuality(item);
-      }
-    }
-  }
-
-  private decreaseSellIn(item: Item) {
-    item.sellIn = item.sellIn - 1;
-  }
 
   private isGeneric(item: Item) {
     return !(
@@ -102,15 +87,4 @@ export class GildedRose {
     return item.name == "Aged Brie";
   }
 
-  private isQualityLessThanMax(item: Item) {
-    return item.quality < 50;
-  }
-
-  private increaseItemQuality(item: Item) {
-    item.quality = item.quality + 1;
-  }
-
-  private decreaseItemQuality(item: Item) {
-    item.quality = item.quality - 1;
-  }
 }
