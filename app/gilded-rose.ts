@@ -19,35 +19,36 @@ export class GildedRose {
 
   updateQuality() {
     for (let item of this.items) {
-      if (GildedRose.isSulfuras(item)) {
-        // don't do anything
-      } else if (GildedRose.isGeneric(item)) {
-        const generic = new GenericItem(item.quality, item.sellIn)
-        generic.update()
-        item.quality = generic.quality
-        item.sellIn = generic.sellIn
-      } else if (GildedRose.isAgedBrie(item)) {
-        const aged = new AgedBrie(item.quality, item.sellIn)
-        aged.update()
-        item.quality = aged.quality
-        item.sellIn = aged.sellIn
-      } else if (GildedRose.isBackstagePass(item)) {
-        const backstagePass = new BackstagePass(item.quality, item.sellIn)
-        backstagePass.update()
-        item.quality = backstagePass.quality
-        item.sellIn = backstagePass.sellIn
-      }
+      const good = new GoodCategory().buildFor(item)
+      if (!good) continue
+      good.update()
+      item.quality = good.quality
+      item.sellIn = good.sellIn
     }
 
     return this.items;
   }
 
+}
+
+class GoodCategory {
+  buildFor(item: Item) {
+    if (GoodCategory.isSulfuras(item)) {
+      // don't do anything
+    } else if (GoodCategory.isGeneric(item)) {
+      return new GenericItem(item.quality, item.sellIn)
+    } else if (GoodCategory.isAgedBrie(item)) {
+      return new AgedBrie(item.quality, item.sellIn)
+    } else if (GoodCategory.isBackstagePass(item)) {
+      return new BackstagePass(item.quality, item.sellIn)
+    }
+  }
 
   private static isGeneric(item: Item) {
     return !(
-      GildedRose.isSulfuras(item) ||
-      GildedRose.isBackstagePass(item) ||
-      GildedRose.isAgedBrie(item)
+        GoodCategory.isSulfuras(item) ||
+        GoodCategory.isBackstagePass(item) ||
+        GoodCategory.isAgedBrie(item)
     );
   }
 
@@ -62,9 +63,7 @@ export class GildedRose {
   private static isAgedBrie(item: Item) {
     return item.name == "Aged Brie";
   }
-
 }
-
 
 class GenericItem {
   sellIn: number;
