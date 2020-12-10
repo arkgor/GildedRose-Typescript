@@ -1,14 +1,14 @@
-import { expect } from 'chai';
-import { Item, GildedRose } from '../app/gilded-rose';
+import { expect } from "chai";
+import { Item, GildedRose } from "../app/gilded-rose";
 
-describe('Gilded Rose', function () {
-  it('should create Item with given name: Foo', function () {
-    const gildedRose = new GildedRose([new Item('foo', 0, 0)]);
+describe("Gilded Rose", function () {
+  it("should create Item with given name: Foo", function () {
+    const gildedRose = new GildedRose([new Item("foo", 0, 0)]);
     const items = gildedRose.updateQuality();
-    expect(items[0].name).to.equal('foo');
+    expect(items[0].name).to.equal("foo");
   });
 
-  it('should match initial snapshot', function () {
+  it("should match initial snapshot", function () {
     var items = [
       new Item("+5 Dexterity Vest", 10, 20),
       new Item("Aged Brie", 2, 0),
@@ -19,17 +19,19 @@ describe('Gilded Rose', function () {
       new Item("Backstage passes to a TAFKAL80ETC concert", 10, 49),
       new Item("Backstage passes to a TAFKAL80ETC concert", 5, 49),
       // this conjured item does not work properly yet
-      new Item("Conjured Mana Cake", 3, 6)
+      new Item("Conjured Mana Cake", 3, 6),
     ];
     var gildedRose = new GildedRose(items);
 
     var days = 2;
     var values: string[] = [];
     for (var i = 0; i < days; i++) {
-      values.push("-------- day " + i + " --------")
+      values.push("-------- day " + i + " --------");
       values.push("name, sellIn, quality");
       items.forEach(function (element) {
-        values.push(element.name + ' ' + element.sellIn + ' ' + element.quality);
+        values.push(
+          element.name + " " + element.sellIn + " " + element.quality
+        );
       });
       gildedRose.updateQuality();
     }
@@ -57,61 +59,73 @@ describe('Gilded Rose', function () {
       "Backstage passes to a TAFKAL80ETC concert 9 50",
       "Backstage passes to a TAFKAL80ETC concert 4 50",
       "Conjured Mana Cake 2 5",
-    ]
+    ];
 
     expect(snapshot).to.eql(values);
-  })
+  });
 });
 
-describe('\'Items quality checks\'', function () {
-  it('\'Backstage passes to a TAFKAL80ETC concert\'', function () {
-    testBackstagePassQuality(0, -1, 20)
-    testBackstagePassQuality(0, 0, 20)
-    testBackstagePassQuality(23, 3, 20)
-    testBackstagePassQuality(22, 6, 20)
-    testBackstagePassQuality(22, 8, 20)
-    testBackstagePassQuality(21, 10, 20)
-    testBackstagePassQuality(21, 12, 20)
-    testBackstagePassQuality(50, 3, 50)
+describe("'Items quality checks'", function () {
+  it("'Backstage passes to a TAFKAL80ETC concert'", function () {
+    testBackstagePassQuality(0, -1, 20);
+    testBackstagePassQuality(0, 0, 20);
+    testBackstagePassQuality(23, 3, 20);
+    testBackstagePassQuality(22, 6, 20);
+    testBackstagePassQuality(22, 8, 20);
+    testBackstagePassQuality(21, 10, 20);
+    testBackstagePassQuality(21, 12, 20);
+    testBackstagePassQuality(50, 3, 50);
 
-    function testBackstagePassQuality(expected: number, sellIn: number, quality: number) {
+    function testBackstagePassQuality(
+      expected: number,
+      sellIn: number,
+      quality: number
+    ) {
       const gildedRose = new GildedRose([
-        new Item('Backstage passes to a TAFKAL80ETC concert', sellIn, quality)]);
+        new Item("Backstage passes to a TAFKAL80ETC concert", sellIn, quality),
+      ]);
       gildedRose.updateQuality();
-      expect(gildedRose.items[0].quality).to.equal(expected)
+      expect(gildedRose.items[0].quality).to.equal(expected);
     }
-  })
+  });
 
+  it("checks 'Aged Brie' quality pass", function () {
+    testAgedBrieQuality(22, -1, 20);
+    testAgedBrieQuality(22, 0, 20);
+    testAgedBrieQuality(21, 3, 20);
+    testAgedBrieQuality(21, 6, 20);
+    testAgedBrieQuality(21, 8, 20);
+    testAgedBrieQuality(21, 10, 20);
+    testAgedBrieQuality(21, 11, 20);
 
-  it('checks \'Aged Brie\' quality pass', function () {
-    testAgedBrieQuality(22, -1, 20)
-    testAgedBrieQuality(22, 0, 20)
-    testAgedBrieQuality(21, 3, 20)
-    testAgedBrieQuality(21, 6, 20)
-    testAgedBrieQuality(21, 8, 20)
-    testAgedBrieQuality(21, 10, 20)
-    testAgedBrieQuality(21, 11, 20)
-
-    function testAgedBrieQuality(expected: number, sellIn: number, quality: number) {
+    function testAgedBrieQuality(
+      expected: number,
+      sellIn: number,
+      quality: number
+    ) {
       const gildedRose = new GildedRose([
-        new Item('Aged Brie', sellIn, quality)]);
+        new Item("Aged Brie", sellIn, quality),
+      ]);
       gildedRose.updateQuality();
-      expect(gildedRose.items[0].quality).to.equal(expected)
+      expect(gildedRose.items[0].quality).to.equal(expected);
     }
-  })
+  });
 
-  it('Generic Items', function () {
-    testGenericItemQuality(18, -2, 20)
-    testGenericItemQuality(18, 0, 20)
-    testGenericItemQuality(19, 4, 20)
-    testGenericItemQuality(19, 8, 20)
-    testGenericItemQuality(19, 12, 20)
+  it("Generic Items", function () {
+    testGenericItemQuality(18, -2, 20);
+    testGenericItemQuality(18, 0, 20);
+    testGenericItemQuality(19, 4, 20);
+    testGenericItemQuality(19, 8, 20);
+    testGenericItemQuality(19, 12, 20);
 
-    function testGenericItemQuality(expected: number, sellIn: number, quality: number) {
-      const gildedRose = new GildedRose([
-        new Item('Foo', sellIn, quality)]);
+    function testGenericItemQuality(
+      expected: number,
+      sellIn: number,
+      quality: number
+    ) {
+      const gildedRose = new GildedRose([new Item("Foo", sellIn, quality)]);
       gildedRose.updateQuality();
-      expect(gildedRose.items[0].quality).to.equal(expected)
+      expect(gildedRose.items[0].quality).to.equal(expected);
     }
-  })
-})
+  });
+});

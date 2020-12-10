@@ -1,4 +1,4 @@
-import * as Inventory from "./inventory"
+import * as Inventory from "./inventory";
 
 export class Item {
   name: string;
@@ -23,11 +23,11 @@ export class GildedRose {
     for (let item of this.items) {
       if (GildedRose.isSulfuras(item)) continue;
 
-      const good = new GoodCategory().buildFor(item)
-      if (!good) continue
-      good.update()
-      item.quality = good.quality
-      item.sellIn = good.sellIn
+      const good = new GoodCategory().buildFor(item);
+      if (!good) continue;
+      good.update();
+      item.quality = good.quality;
+      item.sellIn = good.sellIn;
     }
 
     return this.items;
@@ -36,24 +36,22 @@ export class GildedRose {
   private static isSulfuras(item: Item) {
     return item.name == "Sulfuras, Hand of Ragnaros";
   }
-
 }
 
 class GoodCategory {
   buildFor(item: Item) {
     if (GoodCategory.isGeneric(item)) {
-      return new Inventory.GenericItem(item.quality, item.sellIn)
+      return new Inventory.GenericItem(item.quality, item.sellIn);
     } else if (GoodCategory.isAgedBrie(item)) {
-      return new Inventory.AgedBrie(item.quality, item.sellIn)
+      return new Inventory.AgedBrie(item.quality, item.sellIn);
     } else if (GoodCategory.isBackstagePass(item)) {
-      return new Inventory.BackstagePass(item.quality, item.sellIn)
+      return new Inventory.BackstagePass(item.quality, item.sellIn);
     }
   }
 
   private static isGeneric(item: Item) {
     return !(
-        GoodCategory.isBackstagePass(item) ||
-        GoodCategory.isAgedBrie(item)
+      GoodCategory.isBackstagePass(item) || GoodCategory.isAgedBrie(item)
     );
   }
 
