@@ -17,6 +17,14 @@ class Quality {
             this.amount += 1;
         }
     }
+
+    reset() {
+        this.amount = 0;
+    }
+
+    get lessThanMax() {
+        return this.amount < 50
+    }
 }
 
 export class GenericItem {
@@ -67,31 +75,33 @@ export class AgedBrie {
 
 export class BackstagePass {
     sellIn: number;
-    quality: number;
 
     constructor(quality: number, sellIn: number) {
-        this.quality = quality;
+        this._quality = new Quality(quality);
         this.sellIn = sellIn
     }
 
+    private _quality: Quality;
+
+    get quality() {
+        return this._quality.amount;
+    }
+
     update() {
-        if (this.quality < 50) {
-            this.quality = this.quality + 1;
+        this._quality.increase();
+
+        if (this._quality.lessThanMax) {
             if (this.sellIn < 10) {
-                if (this.quality < 50) {
-                    this.quality = this.quality + 1;
-                }
+                this._quality.increase();
             }
             if (this.sellIn < 6) {
-                if (this.quality < 50) {
-                    this.quality = this.quality + 1;
-                }
+                this._quality.increase();
             }
-            this.sellIn = this.sellIn - 1;
         }
+        this.sellIn = this.sellIn - 1;
 
         if (this.sellIn < 0) {
-            this.quality = this.quality - this.quality;
+            this._quality.reset();
         }
     }
 }
