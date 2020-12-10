@@ -15,24 +15,25 @@ class Quality {
 
 export class GenericItem {
     sellIn: number;
-    quality: number;
 
     constructor(quality: number, sellIn: number) {
-        this.quality = quality;
-        this.sellIn = sellIn
+        this._quality = new Quality(quality);
+        this.sellIn = sellIn;
+    }
+
+    private _quality: Quality;
+
+    get quality() {
+        return this._quality.amount;
     }
 
     update() {
-        if (this.quality > 0) {
-            this.quality = this.quality - 1;
-        }
 
+        this._quality.degrade();
         this.sellIn = this.sellIn - 1;
 
         if (this.sellIn < 0) {
-            if (this.quality > 0) {
-                this.quality = this.quality - 1;
-            }
+            this._quality.degrade();
         }
     }
 }
