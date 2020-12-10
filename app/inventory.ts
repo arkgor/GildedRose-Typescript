@@ -11,6 +11,12 @@ class Quality {
 
         }
     }
+
+    increase() {
+        if (this.amount < 50) {
+            this.amount += 1;
+        }
+    }
 }
 
 export class GenericItem {
@@ -40,23 +46,22 @@ export class GenericItem {
 
 export class AgedBrie {
     sellIn: number;
-    quality: number;
 
     constructor(quality: number, sellIn: number) {
-        this.quality = quality;
+        this._quality = new Quality(quality);
         this.sellIn = sellIn
     }
 
+    private _quality: Quality;
+
+    get quality() {
+        return this._quality.amount;
+    }
+
     update() {
-        if (this.quality < 50) {
-            this.quality = this.quality + 1;
-        }
+        this._quality.increase();
         this.sellIn = this.sellIn - 1;
-        if (this.sellIn < 0) {
-            if (this.quality < 50) {
-                this.quality = this.quality + 1;
-            }
-        }
+        if (this.sellIn < 0) this._quality.increase();
     }
 }
 
