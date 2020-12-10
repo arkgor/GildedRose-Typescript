@@ -1,3 +1,18 @@
+class Quality {
+    amount: number;
+
+    constructor(amount: number) {
+        this.amount = amount;
+    }
+
+    degrade() {
+        if (this.amount > 0) {
+            this.amount -= 1;
+
+        }
+    }
+}
+
 export class GenericItem {
     sellIn: number;
     quality: number;
