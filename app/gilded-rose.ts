@@ -21,6 +21,8 @@ export class GildedRose {
 
   updateQuality() {
     for (let item of this.items) {
+      if (GildedRose.isSulfuras(item)) continue;
+
       const good = new GoodCategory().buildFor(item)
       if (!good) continue
       good.update()
@@ -31,13 +33,15 @@ export class GildedRose {
     return this.items;
   }
 
+  private static isSulfuras(item: Item) {
+    return item.name == "Sulfuras, Hand of Ragnaros";
+  }
+
 }
 
 class GoodCategory {
   buildFor(item: Item) {
-    if (GoodCategory.isSulfuras(item)) {
-      // don't do anything
-    } else if (GoodCategory.isGeneric(item)) {
+    if (GoodCategory.isGeneric(item)) {
       return new Inventory.GenericItem(item.quality, item.sellIn)
     } else if (GoodCategory.isAgedBrie(item)) {
       return new Inventory.AgedBrie(item.quality, item.sellIn)
@@ -48,14 +52,9 @@ class GoodCategory {
 
   private static isGeneric(item: Item) {
     return !(
-        GoodCategory.isSulfuras(item) ||
         GoodCategory.isBackstagePass(item) ||
         GoodCategory.isAgedBrie(item)
     );
-  }
-
-  private static isSulfuras(item: Item) {
-    return item.name == "Sulfuras, Hand of Ragnaros";
   }
 
   private static isBackstagePass(item: Item) {
